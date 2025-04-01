@@ -96,6 +96,8 @@ services:
       - TG_BOT_WEBAPP_NAME=${TG_BOT_WEBAPP_NAME}
     depends_on:
       - backend
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
