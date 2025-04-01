@@ -253,7 +253,7 @@ export default {
   overflow: hidden;
 }
 
-.image-container img {
+.image-container :is(img) {
   width: 100%;
   height: auto;
   object-fit: cover;
@@ -282,7 +282,7 @@ export default {
       width: 300px;
       height: 300px;
 
-      img {
+      :is(img) {
         display: block;
         width: 100%;
         height: 100%;
