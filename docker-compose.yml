@@ -8,8 +8,7 @@ services:
     container_name: tg_shop_frontend
     ports:
       - "3478:3478"
-    environment:
-      - VITE_API_URL=${BACKEND_URL}
+  
     depends_on:
       - backend
     networks:
@@ -28,39 +27,7 @@ services:
     container_name: tg_shop_backend
     ports:
       - "7770:7770"
-    environment:
-      # Настройки базы данных
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      
-      # Настройки админов
-      - TG_ADMINS=${TG_ADMINS}
-      - DELETE_DATABASE=${DELETE_DATABASE}
-      
-      # Настройки бота
-      - TG_BOT_TOKEN=${TG_BOT_TOKEN}
-      - TG_BOT_WEBAPP_NAME=${TG_BOT_WEBAPP_NAME}
-      - TG_BOT_USERNAME=${TG_BOT_USERNAME}
-      
-      # Настройки веб-приложения
-      - FRONTEND_URL=${FRONTEND_URL}
-      - BACKEND_URL=${BACKEND_URL}
-      - TG_WEB_APP_URL=${TG_WEB_APP_URL}
-      - TG_WEB_APP_NAME=${TG_WEB_APP_NAME}
-      - TG_WEB_APP_DESCRIPTION=${TG_WEB_APP_DESCRIPTION}
-      - TG_WEB_APP_START_PARAM=${TG_WEB_APP_START_PARAM}
-      - TG_WEB_APP_START_PARAM_ENCRYPTED=${TG_WEB_APP_START_PARAM_ENCRYPTED}
-      - TG_WEB_APP_START_PARAM_ENCRYPTED_LENGTH=${TG_WEB_APP_START_PARAM_ENCRYPTED_LENGTH}
-      
-      # Настройки поддержки
-      - TG_SUPPORT_USERNAME=${TG_SUPPORT_USERNAME}
-      - TG_SUPPORT_PHONE=${TG_SUPPORT_PHONE}
-      - TG_SUPPORT_EMAIL=${TG_SUPPORT_EMAIL}
-      - TG_SUPPORT_ADDRESS=${TG_SUPPORT_ADDRESS}
-      - TG_SUPPORT_WORK_TIME=${TG_SUPPORT_WORK_TIME}
+    
     depends_on:
       - postgres
     networks:
@@ -75,10 +42,7 @@ services:
   postgres:
     image: postgres:14.15
     container_name: tg_shop_db
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+   
     networks:
       - app-network
     restart: always
@@ -92,15 +56,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.bot
-    environment:
-      - TG_BOT_TOKEN=${TG_BOT_TOKEN}
-      - TG_WEB_APP_URL=${TG_WEB_APP_URL}
-      - TG_SUPPORT_USERNAME=${TG_SUPPORT_USERNAME}
-      - TG_SUPPORT_PHONE=${TG_SUPPORT_PHONE}
-      - TG_SUPPORT_EMAIL=${TG_SUPPORT_EMAIL}
-      - TG_SUPPORT_ADDRESS=${TG_SUPPORT_ADDRESS}
-      - TG_SUPPORT_WORK_TIME=${TG_SUPPORT_WORK_TIME}
-      - TG_BOT_WEBAPP_NAME=${TG_BOT_WEBAPP_NAME}
+ 
     depends_on:
       - backend
     networks:
