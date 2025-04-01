@@ -8,9 +8,6 @@ services:
     container_name: tg_shop_frontend
     ports:
       - "3478:3478"
-  
-    depends_on:
-      - backend
     networks:
       - app-network
     restart: always
@@ -20,53 +17,20 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  backend:
-    build:
-      context: ./beack-end
-      dockerfile: Dockerfile
-    container_name: tg_shop_backend
-    ports:
-      - "7770:7770"
-    
-    depends_on:
-      - postgres
-    networks:
-      - app-network
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-  postgres:
-    image: postgres:14.15
-    container_name: tg_shop_db
-   
-    networks:
-      - app-network
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-  bot:
-    build:
-      context: .
-      dockerfile: Dockerfile.bot
- 
-    depends_on:
-      - backend
-    networks:
-      - app-network
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+  # Когда фронтенд успешно задеплоится, можно будет добавить бота:
+  # bot:
+  #   build:
+  #     context: ./bot
+  #     dockerfile: Dockerfile
+  #   container_name: tg_shop_bot
+  #   networks:
+  #     - app-network
+  #   restart: always
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
 
 networks:
   app-network:
