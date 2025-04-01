@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+asyncpg
+python-multipart
+python-dotenv
+telebot
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+aiohttp
+requests
+certifi
+
