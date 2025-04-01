@@ -14,6 +14,12 @@ services:
       - backend
     networks:
       - app-network
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   backend:
     build:
@@ -56,10 +62,15 @@ services:
       - TG_SUPPORT_ADDRESS=${TG_SUPPORT_ADDRESS}
       - TG_SUPPORT_WORK_TIME=${TG_SUPPORT_WORK_TIME}
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     networks:
       - app-network
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   postgres:
     image: postgres:14.15
@@ -68,10 +79,14 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
     networks:
       - app-network
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   bot:
     build:
@@ -90,6 +105,12 @@ services:
       - backend
     networks:
       - app-network
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   app-network:
