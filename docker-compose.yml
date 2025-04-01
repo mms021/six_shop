@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: tg_shop_frontend
     ports:
-      - "5173:3478"
+      - "3478:3478"
     environment:
       - VITE_API_URL=${BACKEND_URL}
     volumes:
