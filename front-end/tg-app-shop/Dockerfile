@@ -2,12 +2,12 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Копируем только необходимые файлы для сервера
-COPY ./public /app/public
-COPY ./server.js /app/server.js
+COPY package*.json ./
 
-# Экспонируем порт 3478
+RUN npm install
+
+COPY . .
+
 EXPOSE 3478
 
-# Запускаем простой сервер
-CMD ["node", "server.js"] 
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3478"] 
