@@ -1,8 +1,11 @@
-version: '3'
+version: '3.8'
 
 services:
-  app:
-    build: ./front-end/tg-app-shop
+  frontend:
+    build:
+      context: ./front-end/tg-app-shop
+      dockerfile: Dockerfile
+    container_name: tg_shop_frontend
     ports:
       - "3478:3478"
     networks:
