@@ -9,6 +9,9 @@ services:
       - ./front-end/tg-app-shop/.env
     ports:
       - "3478:3478"
+    networks:
+      - app-network
+
 
   #back-end:
   #  container_name: tg_shop_back_end
