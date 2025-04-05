@@ -1,17 +1,10 @@
-version: "3.9"
-
+version: "3"
 
 services:
-  front-end:
-    container_name: tg_shop_front_end
+  app:
     build: ./front-end/tg-app-shop
-    env_file:
-      - ./front-end/tg-app-shop/.env
     ports:
       - "3478:3478"
-    networks:
-      - app-network
-
 
   back-end:
     container_name: tg_shop_back_end
@@ -24,13 +17,13 @@ services:
     ports:
       - "7770:7770" 
 
-  bot:
-    container_name: tg_shop_bot
-    build: ./bot
-    env_file:
-      - ./bot/.env
-    networks:
-      - app-network
+  #bot:
+  #  container_name: tg_shop_bot
+  #  build: ./bot
+  #  env_file:
+  #    - ./bot/.env
+  #  networks:
+  #    - app-network
 
   # Когда фронтенд успешно задеплоится, можно будет добавить бота:
   # bot:
