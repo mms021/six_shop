@@ -19,7 +19,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/static': {
-        target: 'http://localhost:7770',
+        target: process.env.VITE_API_BASE_URL,
         changeOrigin: true,
       }
     }
