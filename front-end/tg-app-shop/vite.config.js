@@ -20,6 +20,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 3478,
     allowedHosts: [ 
+      'localhost',
       process.env.VITE_API_BASE_URL,
       process.env.VITE_STATIC_URL
     ],
