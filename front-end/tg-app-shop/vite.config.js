@@ -21,7 +21,8 @@ export default defineConfig({
     allowedHosts: [ 
       'localhost',
       '*.twc1.net',
-      'all'
+      'all',
+      'mms021-six-shop-f408.twc1.net'
     ],
     proxy: {
       '/static': {
