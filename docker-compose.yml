@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build: ./front-end/tg-app-shop
+    build: .
     ports:
       - "3478:3478"
     networks:
