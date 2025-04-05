@@ -1,13 +1,16 @@
-version: "3.9"
+version: "3"
 
 services:
-  front-end:
+  app:
     container_name: tg_shop_front_end
     build: ./front-end/tg-app-shop
     env_file:
       - ./front-end/tg-app-shop/.env
     ports:
       - "3478:3478"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:7770
+      - VITE_STATIC_URL=http://localhost:7770
 
 
 
