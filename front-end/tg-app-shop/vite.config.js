@@ -9,7 +9,7 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 export default defineConfig({
   plugins: [
     vue(),
-    VueDevTools(),
+    //VueDevTools(),
   ],
   resolve: {
     alias: {
@@ -17,6 +17,13 @@ export default defineConfig({
     }
   },
   server: {
+    host: '0.0.0.0',
+    port: 3478,
+    allowedHosts: [ 
+      process.env.VITE_API_BASE_URL,
+      process.env.VITE_STATIC_URL
+    ],
+
     proxy: {
       '/static': {
         target: process.env.VITE_API_BASE_URL,
