@@ -1,17 +1,17 @@
-version: '3.8'
+version: "3.9"
+
 
 services:
-  app:
-    build: .
+  front-end:
+    container_name: tg_shop_front_end
+    build: ./front-end/tg-app-shop
+    env_file:
+      - ./front-end/tg-app-shop/.env
     ports:
       - "3478:3478"
     networks:
       - app-network
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+
 
   # Когда фронтенд успешно задеплоится, можно будет добавить бота:
   # bot:
