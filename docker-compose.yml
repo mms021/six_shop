@@ -3,39 +3,37 @@ version: "3.9"
 services:
   app:
     build: ./front-end/tg-app-shop
+    container_name: tg_shop_app
     env_file:
       - ./front-end/tg-app-shop/.env
     ports:
       - "3478:3478"
-
-  database:
-    image: postgres:15
-    container_name: database
-    env_file:
-      - .env_example
-    ports:
-      - "5432:5432"
-
 
   back-end:
     container_name: tg_shop_back_end
     build: ./back-end/
     env_file:
       - ./back-end/.env
-    #networks:
-    #  - app-network
     ports:
       - "7770:7770" 
     depends_on:
         - database
 
-  #bot:
-  #  container_name: tg_shop_bot
-  #  build: ./bot
-  #  env_file:
-  #    - ./bot/.env
-  #  networks:
-  #    - app-network
+
+  database:
+    image: postgres:15
+    container_name: database
+    env_file:
+      - ./back-end/.env
+    ports:
+      - "5432:5432"
+
+  bot:
+    container_name: tg_shop_bot
+    build: ./bot
+    env_file:
+      - ./bot/.env
+
 
   # Когда фронтенд успешно задеплоится, можно будет добавить бота:
   # bot:
@@ -52,6 +50,3 @@ services:
   #       max-size: "10m"
   #       max-file: "3"
 
-networks:
-  app-network:
-    driver: bridge 
