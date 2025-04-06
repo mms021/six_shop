@@ -1,15 +1,12 @@
 version: "3.9"
 
-
 services:
-  app:
-    container_name: tg_shop_app
-    build: ./front-end/tg-app-shop/Dockerfile
+   app:
+    build: ./front-end/tg-app-shop
     env_file:
       - ./front-end/tg-app-shop/.env
     ports:
       - "3478:3478"
-
 
   #back-end:
   #  container_name: tg_shop_back_end
@@ -45,3 +42,6 @@ services:
   #       max-size: "10m"
   #       max-file: "3"
 
+networks:
+  app-network:
+    driver: bridge 
