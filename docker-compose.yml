@@ -1,23 +1,33 @@
 version: "3.9"
 
 services:
-   app:
+  app:
     build: ./front-end/tg-app-shop
     env_file:
       - ./front-end/tg-app-shop/.env
     ports:
       - "3478:3478"
 
-  #back-end:
-  #  container_name: tg_shop_back_end
-  #  build: ./back-end/
-  #  env_file:
-  #    - ./back-end/.env
-  #  networks:
-  #    - app-network
+  database:
+    image: postgres:15
+    container_name: database
+    env_file:
+      - .env_example
+    ports:
+      - "5432:5432"
 
-  #ports:
-  #  - "7770:7770" 
+
+  back-end:
+    container_name: tg_shop_back_end
+    build: ./back-end/
+    env_file:
+      - ./back-end/.env
+    #networks:
+    #  - app-network
+    ports:
+      - "7770:7770" 
+    depends_on:
+        - database
 
   #bot:
   #  container_name: tg_shop_bot
