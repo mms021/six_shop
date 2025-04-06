@@ -2,17 +2,19 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-#COPY package*.json ./
 
-COPY front-end/tg-app-shop/package*.json ./
+
+COPY . .
+
+#COPY front-end/tg-app-shop/package*.json ./
+
+#RUN npm install
+
+#COPY front-end/tg-app-shop/ .
 
 RUN npm install
 
-COPY front-end/tg-app-shop/ .
 
-RUN npm install
-
-#COPY . .
 
 EXPOSE 3478
 

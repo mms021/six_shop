@@ -1,16 +1,17 @@
 version: "3.9"
 
+
 services:
   app:
-    container_name: tg_shop_front_end
-    build: ./front-end/tg-app-shop
+    container_name: tg_shop_app
+    build: ./front-end/tg-app-shop/Dockerfile
     env_file:
       - ./front-end/tg-app-shop/.env
     ports:
       - "3478:3478"
-
-
-
+    environment:
+      - VITE_API_BASE_URL=http://localhost:7770
+      - VITE_STATIC_URL=http://localhost:7770
 
   #back-end:
   #  container_name: tg_shop_back_end
@@ -45,3 +46,7 @@ services:
   #     options:
   #       max-size: "10m"
   #       max-file: "3"
+
+networks:
+  app-network:
+    driver: bridge 
