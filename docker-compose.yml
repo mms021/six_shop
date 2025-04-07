@@ -1,11 +1,11 @@
 services:
   app:
+    container_name: tg_shop_app
     build:
       context: .
       dockerfile: Dockerfile
       args:
         SERVICE_TYPE: frontend
-    container_name: tg_shop_app
     env_file:
       - ./front-end/tg-app-shop/.env
     ports:
@@ -13,12 +13,14 @@ services:
     restart: always
 
   back-end:
-    container_name: tg_shop_back_end
+    container_name: tg_shop_back_end 
     build:
       context: .
       dockerfile: Dockerfile
       args:
         SERVICE_TYPE: backend
+    env_file:
+      - ./back-end/.env
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
