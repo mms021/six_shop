@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
         'localhost',
         '*.twc1.net',
         'all',
-        'mms021-six-shop-f408.twc1.net',
+        'mms021-six-shop-b354.twc1.net',
       ],
       proxy: {
         '/static': {
