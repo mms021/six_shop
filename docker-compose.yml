@@ -4,9 +4,7 @@ services:
   app:
     build: 
       context: .
-      dockerfile: Dockerfile
-      args:
-        SERVICE_TYPE: frontend
+      dockerfile: Dockerfile.frontend
     container_name: tg_shop_app
     env_file:
       - ./front-end/tg-app-shop/.env
@@ -48,7 +46,4 @@ services:
     env_file:
       - ./bot/.env
     restart: always
-
-volumes:
-  pgdata:
 
