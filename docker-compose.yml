@@ -1,8 +1,10 @@
-version: "3.9"
+version: "3"
 
 services:
-  front-end:
-    build: ./front-end/tg-app-shop
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
     container_name: tg_shop_app
     env_file:
       - ./front-end/tg-app-shop/.env
@@ -11,14 +13,15 @@ services:
 
   back-end:
     container_name: tg_shop_back_end
-    build: ./back-end/
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     env_file:
       - ./back-end/.env
     ports:
       - "7770:7770" 
     depends_on:
-        - database
-
+      - database
 
   database:
     image: postgres:15
@@ -30,7 +33,9 @@ services:
 
   bot:
     container_name: tg_shop_bot
-    build: ./bot
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
     env_file:
       - ./bot/.env
 
