@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => {
         '*.twc1.net',
         'all',
         'mms021-six-shop-b354.twc1.net',
+        
       ],
       proxy: {
         '/static': {
