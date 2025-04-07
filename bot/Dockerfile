@@ -1,11 +1,6 @@
-FROM python:3.11-slim
-
+FROM python:3.10-slim
 WORKDIR /app
-
-COPY requirements.txt .
-
+COPY ./bot/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-
-COPY miniappbot.py .
-
-CMD ["python", "miniappbot.py"] 
+COPY ./bot/ ./
+CMD ["python", "miniappbot.py"]
