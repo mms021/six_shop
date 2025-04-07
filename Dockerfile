@@ -1,4 +1,3 @@
-# Универсальный Dockerfile для всех сервисов
 ARG SERVICE_TYPE=frontend
 
 # Выбор нужного образа на основе SERVICE_TYPE
@@ -21,7 +20,7 @@ WORKDIR /app
 COPY ./back-end/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY ./back-end/ .
-
+RUN chmod +x start.sh
 
 # Установка cron
 RUN apt-get update && apt-get install -y cron

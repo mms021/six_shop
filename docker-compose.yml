@@ -1,10 +1,10 @@
-version: "3"
-
 services:
   app:
-    build: 
+    build:
       context: .
-      dockerfile: Dockerfile.frontend
+      dockerfile: Dockerfile
+      args:
+        SERVICE_TYPE: frontend
     container_name: tg_shop_app
     env_file:
       - ./front-end/tg-app-shop/.env
@@ -13,14 +13,16 @@ services:
     restart: always
 
   back-end:
-    build: 
+    container_name: tg_shop_back_end
+    build:
       context: .
       dockerfile: Dockerfile
       args:
         SERVICE_TYPE: backend
-    container_name: tg_shop_back_end
-    env_file:
-      - ./back-end/.env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tg_shop
     ports:
       - "7770:7770" 
     depends_on:
@@ -30,19 +32,21 @@ services:
   database:
     image: postgres:15
     container_name: database
-    env_file:
-      - ./back-end/.env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tg_shop
     ports:
       - "5432:5432"
     restart: always
 
   bot:
-    build: 
+    container_name: tg_shop_bot
+    build:
       context: .
       dockerfile: Dockerfile
       args:
         SERVICE_TYPE: bot
-    container_name: tg_shop_bot
     env_file:
       - ./bot/.env
     restart: always
