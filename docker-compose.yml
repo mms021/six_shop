@@ -7,6 +7,30 @@ services:
     env_file:
       - ./front-end/tg-app-shop/.env
     ports:
-      - "8000:8000"
+      - "3478:3478"
 
+  back-end:
+    container_name: tg_shop_back_end
+    build: ./back-end/
+    env_file:
+      - ./back-end/.env
+    ports:
+      - "7770:7770" 
+    depends_on:
+        - database
+
+
+  database:
+    image: postgres:15
+    container_name: database
+    env_file:
+      - ./back-end/.env
+    ports:
+      - "5432:5432"
+
+  bot:
+    container_name: tg_shop_bot
+    build: ./bot
+    env_file:
+      - ./bot/.env
 
