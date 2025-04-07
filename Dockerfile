@@ -10,9 +10,9 @@ WORKDIR /app
 COPY ./front-end/tg-app-shop/package*.json ./
 RUN npm install
 COPY ./front-end/tg-app-shop/ ./
-RUN npm run build
+#RUN npm run build
 EXPOSE 3478
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3478"]
+CMD ["npm", "run", "dev"]
 
 # Секция для бэкенда
 FROM python:3.10 AS backend
