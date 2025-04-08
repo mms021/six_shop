@@ -20,7 +20,7 @@ WORKDIR /app
 COPY ./back-end/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY ./back-end/ .
-RUN chmod +x start.sh
+
 
 # Установка cron
 RUN apt-get update && apt-get install -y cron
@@ -30,6 +30,8 @@ RUN echo "0 18 * * * python /app/importProducts.py" >> /etc/crontab
 EXPOSE 7770
 # Запуск cron в фоновом режиме
 CMD cron && ./start.sh
+
+
 
 # Секция для бота
 FROM python:3.10-slim AS bot

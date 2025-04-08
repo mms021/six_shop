@@ -15,7 +15,7 @@ from functools import wraps
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models import init_db, ProductResponse, CategoryResponse, ProductDetailResponse, ProductListResponse, SortOrder, ProductFilter, async_session, Cart, CartItem, Products, ProductImage, ProductVariants, OrderStatus, User, Favorite, Reaction
+from models import init_db, ProductResponse, CategoryResponse, ProductDetailResponse, ProductListResponse, SortOrder, ProductFilter, async_session, Cart, CartItem, Products, ProductImage, ProductVariants, OrderStatus, User,  Reaction
 import requests_db as rq
 
 # Функция для получения сессии базы данных

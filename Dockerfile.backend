@@ -1,0 +1,20 @@
+FROM python:3.10
+WORKDIR /app
+
+COPY ./back-end/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./back-end/ .
+RUN chmod +x start.sh
+
+# Установка cron и curl для проверки доступности сервера
+RUN apt-get update && apt-get install -y cron curl
+
+# Настройка периодического запуска через cron (ежедневно в 18:00)
+RUN echo "0 18 * * * cd /app && python /app/importProducts.py >> /var/log/cron.log 2>&1" >> /etc/crontab
+RUN touch /var/log/cron.log
+
+EXPOSE 7770
+
+# Запуск cron в фоновом режиме и основного скрипта
+CMD service cron start && ./start.sh 
