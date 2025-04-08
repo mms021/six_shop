@@ -29,7 +29,7 @@ COPY ./back-end/importProducts.py /app/importProducts.py
 RUN echo "0 18 * * * python /app/importProducts.py" >> /etc/crontab
 EXPOSE 7770
 # Запуск cron в фоновом режиме
-CMD cron && ./start.sh
+CMD cron && python main.py 
 
 
 
