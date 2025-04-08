@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
         'localhost',
         '*.twc1.net',
         'all',
-        'mms021-six-shop-f7ef.twc1.net',
+        'mms021-six-shop-6ce8.twc1.net',
         't.me',
         
       ],
