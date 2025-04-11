@@ -1,6 +1,8 @@
 ARG SERVICE_TYPE=frontend
 
-# Выбор нужного образа на основе SERVICE_TYP
+# Выбор нужного образа на основе SERVICE_TYPE
+FROM node:18-alpine AS base_image
+ONBUILD RUN echo "Неверное значение SERVICE_TYPE"
 
 # Секция для фронтенда
 FROM node:18-alpine AS frontend
@@ -44,3 +46,5 @@ FROM frontend AS final_frontend
 FROM backend AS final_backend
 FROM bot AS final_bot
 
+# Финальный образ, выбираем нужный образ на основе SERVICE_TYPE
+FROM final_${SERVICE_TYPE} AS final 
