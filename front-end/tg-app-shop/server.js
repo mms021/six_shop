@@ -17,8 +17,7 @@ const allowedOrigins = [
     'https://mms021-six-shop-8662.twc1.net',
     'http://mms021-six-shop-8662.twc1.net',
     'http://localhost:3478',
-    'http://0.0.0.0:3478',
-    'mms021-six-shop-8662.twc1.net'
+    'http://0.0.0.0:3478'
 ];
 
 // Добавляем определение mimeTypes
