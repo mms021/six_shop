@@ -4,27 +4,26 @@ ARG SERVICE_TYPE=frontend
 FROM node:18-alpine AS base_image
 ONBUILD RUN echo "Неверное значение SERVICE_TYPE"
 
+
+
 # Секция для фронтенда
 FROM node:18-alpine AS frontend
 WORKDIR /app
-
 # Копируем только package.json сначала
 COPY ./front-end/tg-app-shop/package*.json ./
 RUN npm install
-
 # Копируем остальные файлы
 COPY ./front-end/tg-app-shop/ ./
-
 # Устанавливаем переменные окружения для сборки
 ENV NODE_ENV=production
-
 # Собираем приложение
 RUN npm run build
-
 # Установка express для продакшн-сервера
 RUN npm install express
 EXPOSE 3478
 CMD ["node", "server.js"] 
+
+
 
 # Секция для бэкенда
 FROM python:3.10 AS backend
@@ -32,7 +31,6 @@ WORKDIR /app
 COPY ./back-end/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY ./back-end/ .
-
 
 # Установка cron
 RUN apt-get update && apt-get install -y cron
@@ -48,7 +46,6 @@ CMD cron && python main.py
 # Секция для бота
 FROM python:3.10-slim AS bot
 WORKDIR /app
-
 # Установка необходимых системных зависимостей
 RUN apt-get update && apt-get install -y \
     gcc \

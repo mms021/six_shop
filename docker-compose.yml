@@ -10,6 +10,7 @@ services:
       - ./front-end/tg-app-shop/.env
     environment:
       - NODE_ENV=production
+      - PORT=3478
     ports:
       - "3478:3478"
     restart: always
