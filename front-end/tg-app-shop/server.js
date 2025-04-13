@@ -14,6 +14,7 @@ const allowedOrigins = [
     'https://t.me',
     'https://telegram.org',
     'https://telegram.me',
+    'http://mms021-six-shop-8662.twc1.net',
     'https://mms021-six-shop-8662.twc1.net'
 ];
 
