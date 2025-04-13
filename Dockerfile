@@ -7,12 +7,18 @@ ONBUILD RUN echo "Неверное значение SERVICE_TYPE"
 # Секция для фронтенда
 FROM node:18-alpine AS frontend
 WORKDIR /app
-COPY ./front-end/tg-app-shop/package*.json ./
+
+COPY package*.json ./
 RUN npm install
-COPY ./front-end/tg-app-shop/ ./
-#RUN npm run build
+
+COPY . .
+RUN npm run build
+# Установка express для продакшн-сервера
+RUN npm install express
+
 EXPOSE 3478
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3478" ]
+
+CMD ["node", "server.js"] 
 
 # Секция для бэкенда
 FROM python:3.10 AS backend
