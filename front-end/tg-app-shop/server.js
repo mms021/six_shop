@@ -14,10 +14,13 @@ const allowedOrigins = [
     'https://t.me',
     'https://telegram.org',
     'https://telegram.me',
-    'http://localhost:3478', 
+    'http://localhost:3478',
+    'http://localhost:3479', // альтернативный порт
     'http://0.0.0.0:3478',
+    'http://0.0.0.0:3479', // альтернативный порт
     'https://mms021-six-shop-8662.twc1.net',
-    'https://mms021-six-shop-8662.twc1.net:3478'
+    'https://mms021-six-shop-8662.twc1.net:3478',
+    'https://mms021-six-shop-8662.twc1.net:3479' // альтернативный порт
 ];
 
 // Добавляем определение mimeTypes
@@ -103,12 +106,31 @@ async function checkDistDirectory() {
     }
 }
 
-// Запускаем проверку перед стартом сервера
-checkDistDirectory().then(() => {
-    server.listen(PORT, '0.0.0.0', () => {
-        console.log(`Сервер запущен на порту ${PORT}`);
+// Функция для запуска сервера с проверкой порта
+async function startServer(port) {
+    return new Promise((resolve, reject) => {
+        server.listen(port, '0.0.0.0')
+            .on('listening', () => {
+                console.log(`Сервер запущен на порту ${port}`);
+                resolve();
+            })
+            .on('error', (err) => {
+                if (err.code === 'EADDRINUSE') {
+                    console.warn(`Порт ${port} занят, пробуем альтернативный порт...`);
+                    server.close();
+                    // Пробуем следующий порт
+                    startServer(port + 1).then(resolve).catch(reject);
+                } else {
+                    reject(err);
+                }
+            });
     });
-}).catch(err => {
-    console.error('Ошибка при запуске сервера:', err);
-    process.exit(1);
-}); 
+}
+
+// Запускаем проверку перед стартом сервера
+checkDistDirectory()
+    .then(() => startServer(PORT))
+    .catch(err => {
+        console.error('Ошибка при запуске сервера:', err);
+        process.exit(1);
+    }); 
