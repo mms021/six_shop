@@ -32,7 +32,7 @@ async def get_async_session():
 BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
 
 FRONTEND_URL = os.getenv('FRONTEND_URL')
-BACKEND_URL = os.getenv('TG_WEB_APP_URL')
+BACKEND_URL = os.getenv('BACKEND_URL')
 
 @asynccontextmanager
 async def lifespan(app_:FastAPI):
@@ -898,5 +898,5 @@ async def log_requests(request, call_next):
     return response
 
 if __name__ == "__main__":
-    uvicorn.run(app, host=BACKEND_URL, port=7770)
+    uvicorn.run(app, host="0.0.0.0", port=7770)
 
