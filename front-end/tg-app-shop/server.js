@@ -9,6 +9,17 @@ const __dirname = dirname(__filename);
 const PORT = 3478;
 const distDir = join(__dirname, 'dist');
 
+// Список разрешенных доменов
+const allowedOrigins = [
+    'https://t.me',
+    'https://telegram.org',
+    'https://telegram.me',
+    'http://localhost:3478', 
+    'http://0.0.0.0:3478',
+    'https://mms021-six-shop-8662.twc1.net',
+    'https://mms021-six-shop-8662.twc1.net:3478'
+];
+
 // Добавляем определение mimeTypes
 const mimeTypes = {
     '.html': 'text/html',
@@ -30,6 +41,22 @@ const mimeTypes = {
 
 const server = http.createServer(async (req, res) => {
     try {
+        // Добавляем CORS заголовки
+        const origin = req.headers.origin;
+        if (origin && allowedOrigins.includes(origin)) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            res.setHeader('Access-Control-Max-Age', '86400'); // 24 часа
+        }
+
+        // Обработка preflight запросов
+        if (req.method === 'OPTIONS') {
+            res.writeHead(204);
+            res.end();
+            return;
+        }
+
         let filePath = join(distDir, req.url === '/' ? 'index.html' : decodeURIComponent(req.url));
         
         // Получаем расширение файла
@@ -39,14 +66,20 @@ const server = http.createServer(async (req, res) => {
             const content = await fs.readFile(filePath);
             res.writeHead(200, {
                 'Content-Type': mimeTypes[ext] || 'application/octet-stream',
-                'Cache-Control': 'public, max-age=31536000' // кэширование на 1 год для статических файлов
+                'Cache-Control': 'public, max-age=31536000',
+                'X-Frame-Options': 'ALLOW-FROM https://t.me/',
+                'Content-Security-Policy': "frame-ancestors 'self' https://t.me https://*.telegram.org https://*.telegram.me"
             });
             res.end(content);
         } catch (err) {
             // Если файл не найден, возвращаем index.html
             if (err.code === 'ENOENT') {
                 const indexContent = await fs.readFile(join(distDir, 'index.html'));
-                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.writeHead(200, { 
+                    'Content-Type': 'text/html',
+                    'X-Frame-Options': 'ALLOW-FROM https://t.me/',
+                    'Content-Security-Policy': "frame-ancestors 'self' https://t.me https://*.telegram.org https://*.telegram.me"
+                });
                 res.end(indexContent);
             } else {
                 throw err;
