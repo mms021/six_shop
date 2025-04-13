@@ -48,9 +48,6 @@ services:
       - POSTGRES_INITDB_ARGS=--auth=scram-sha-256
       - LANG=ru_RU.utf8
       - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./database/init:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     healthcheck:
@@ -76,11 +73,6 @@ services:
     networks:
       - app_network
     restart: always
-
-volumes:
-  postgres_data:
-    driver: local
-    name: tg_shop_postgres_data
 
 networks:
   app_network:
