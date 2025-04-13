@@ -12,6 +12,7 @@ from sqlalchemy import select, update
 from urllib.parse import urlparse, quote
 import tempfile
 import json
+import sys
 
 # Загружаем переменные окружения из .env файла
 load_dotenv()
@@ -529,7 +530,7 @@ async def main():
         await process_products(sheet, SPREADSHEET_ID, session)
         print("Импорт завершен")
 
-    # Удаляем временный файл с учетными данными
+    
     try:
         os.unlink(CREDENTIALS_FILE)
         print(f"Временный файл учетных данных удален: {CREDENTIALS_FILE}")
@@ -537,4 +538,9 @@ async def main():
         print(f"Ошибка при удалении временного файла: {e}")
 
 if __name__ == "__main__":
+    args = sys.argv
+    print(args)
+    if len(args) > 1 and args[1] == 'init':
+        asyncio.run(init_db())
     asyncio.run(main())
+    

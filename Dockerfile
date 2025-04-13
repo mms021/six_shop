@@ -32,14 +32,9 @@ COPY ./back-end/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY ./back-end/ .
 
-# Установка cron
-RUN apt-get update && apt-get install -y cron
-# Копирование скрипта и добавление задания в кронтаб
-COPY ./back-end/importProducts.py /app/importProducts.py
-RUN echo "0 18 * * * python /app/importProducts.py" >> /etc/crontab
 EXPOSE 7770
-# Запуск cron в фоновом режиме
-CMD cron && python main.py 
+
+CMD sleep 10 && python importProducts.py init && python main.py
 
 
 
