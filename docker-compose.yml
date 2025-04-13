@@ -7,7 +7,7 @@ services:
       args:
         SERVICE_TYPE: frontend
     env_file:
-      - ./front-end/tg-app-shop/.env
+      - .env
     environment:
       - NODE_ENV=production
       - PORT=3478
@@ -25,7 +25,7 @@ services:
       args:
         SERVICE_TYPE: backend
     env_file:
-      - ./back-end/.env
+      - .env
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=G21nd21nd1opsa
@@ -35,6 +35,8 @@ services:
     depends_on:
       - database
     restart: always
+    networks:
+      - app_network
 
   database:
     image: postgres:15
@@ -46,6 +48,8 @@ services:
     ports:
       - "5432:5432"
     restart: always
+    networks:
+      - app_network
 
   bot:
     container_name: tg_shop_bot
@@ -55,12 +59,16 @@ services:
       args:
         SERVICE_TYPE: bot
     env_file:
-      - ./bot/.env
+      - .env
     environment:
       - PYTHONUNBUFFERED=1
     networks:
       - app_network
     restart: always
+
+volumes:
+  postgres_data:
+    driver: local
 
 networks:
   app_network:
