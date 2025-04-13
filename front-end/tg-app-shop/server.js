@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const PORT = 3478;
+const distDir = join(__dirname, 'dist');
 
 // Добавляем определение mimeTypes
 const mimeTypes = {
@@ -29,7 +30,6 @@ const mimeTypes = {
 
 const server = http.createServer(async (req, res) => {
     try {
-        const distDir = join(__dirname, 'dist');
         let filePath = join(distDir, req.url === '/' ? 'index.html' : decodeURIComponent(req.url));
         
         // Получаем расширение файла
@@ -59,6 +59,23 @@ const server = http.createServer(async (req, res) => {
     }
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-    console.log(`Сервер запущен на порту ${PORT}`);
+// Проверяем существование dist директории
+async function checkDistDirectory() {
+    try {
+        await fs.access(distDir);
+        console.log('Директория dist найдена');
+    } catch (err) {
+        console.error('Ошибка: директория dist не найдена');
+        process.exit(1);
+    }
+}
+
+// Запускаем проверку перед стартом сервера
+checkDistDirectory().then(() => {
+    server.listen(PORT, '0.0.0.0', () => {
+        console.log(`Сервер запущен на порту ${PORT}`);
+    });
+}).catch(err => {
+    console.error('Ошибка при запуске сервера:', err);
+    process.exit(1);
 }); 

@@ -7,6 +7,7 @@ ONBUILD RUN echo "Неверное значение SERVICE_TYPE"
 # Секция для фронтенда
 FROM node:18-alpine AS frontend
 WORKDIR /app
+
 COPY ./front-end/tg-app-shop/package*.json ./
 RUN npm install
 COPY ./front-end/tg-app-shop/ ./

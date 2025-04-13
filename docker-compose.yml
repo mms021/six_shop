@@ -10,6 +10,8 @@ services:
       - ./front-end/tg-app-shop/.env
     ports:
       - "3478:3478"
+    volumes:
+      - ./front-end/tg-app-shop/dist:/app/dist
     restart: always
 
   back-end:
