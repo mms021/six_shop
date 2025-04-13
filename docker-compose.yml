@@ -8,6 +8,8 @@ services:
         SERVICE_TYPE: frontend
     env_file:
       - ./front-end/tg-app-shop/.env
+    environment:
+      - NODE_ENV=production
     ports:
       - "3478:3478"
     restart: always

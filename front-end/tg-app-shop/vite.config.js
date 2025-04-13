@@ -21,20 +21,16 @@ export default defineConfig(({ mode }) => {
     server: {
       host: '0.0.0.0',
       port: 3478,
-      allowedHosts: [ 
-        'localhost',
-        '*.twc1.net',
-        'all',
-        'mms021-six-shop-8662.twc1.net',
-        't.me',
-        
-      ],
-      proxy: {
-        '/static': {
-          target:  'http://localhost:7770',
-          changeOrigin: true,
-        }
-      }
+      cors: true
+    },
+    build: {
+      outDir: 'dist',
+      assetsDir: 'assets',
+      emptyOutDir: true,
+      sourcemap: false
+    },
+    define: {
+      'process.env.NODE_ENV': '"production"'
     }
   }
 })
