@@ -11,6 +11,8 @@ services:
     ports:
       - "3478:3478"
     restart: always
+    networks:
+      - app_network
 
   back-end:
     container_name: tg_shop_back_end 
@@ -51,5 +53,13 @@ services:
         SERVICE_TYPE: bot
     env_file:
       - ./bot/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app_network
     restart: always
+
+networks:
+  app_network:
+    driver: bridge
 

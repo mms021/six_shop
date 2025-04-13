@@ -2,30 +2,28 @@ import os
 import logging
 from dotenv import load_dotenv
 from telegram import Update, WebAppInfo, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler
+from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler, MessageHandler, filters
 
-# Настраиваем логирование с минимальными выводами
+# Настраиваем логирование
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.WARNING  # Меняем на WARNING, чтобы уменьшить количество логов
+    level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
+# Загружаем переменные окружения
 load_dotenv()
-
 BOT_TOKEN = os.getenv('TG_BOT_TOKEN')
 WEBAPP_URL = os.getenv('TG_WEB_APP_URL')
 SUPPORT_USERNAME = os.getenv('TG_SUPPORT_USERNAME', 'support').lstrip('@')
 
-# Проверка необходимых переменных без лишнего логирования
-if not BOT_TOKEN or not WEBAPP_URL or not SUPPORT_USERNAME:
-    logger.error("Ошибка в настройках: проверьте переменные окружения в .env файле")
-    if not BOT_TOKEN:
-        raise ValueError("Не задан токен бота! Проверьте TG_BOT_TOKEN")
-    if not WEBAPP_URL:
-        raise ValueError("Не задан URL веб-приложения! Проверьте TG_WEB_APP_URL")
-    if not SUPPORT_USERNAME:
-        raise ValueError("Не задан username поддержки! Проверьте TG_SUPPORT_USERNAME")
+# Проверка переменных окружения
+if not all([BOT_TOKEN, WEBAPP_URL, SUPPORT_USERNAME]):
+    missing = []
+    if not BOT_TOKEN: missing.append('TG_BOT_TOKEN')
+    if not WEBAPP_URL: missing.append('TG_WEB_APP_URL')
+    if not SUPPORT_USERNAME: missing.append('TG_SUPPORT_USERNAME')
+    raise ValueError(f"Отсутствуют обязательные переменные окружения: {', '.join(missing)}")
 
 async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Минимальный обработчик ошибок."""
@@ -147,31 +145,28 @@ async def back_to_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode='Markdown'
     )
 
-def main():
+def run_bot():
     """Запуск бота."""
-    try:
-        application = Application.builder().token(BOT_TOKEN).build()
+    application = Application.builder().token(BOT_TOKEN).build()
 
-        # Обработчики
-        application.add_handler(CommandHandler("start", start))
-        application.add_handler(CallbackQueryHandler(about, pattern="^about$"))
-        application.add_handler(CallbackQueryHandler(catalog, pattern="^catalog$"))
-        application.add_handler(CallbackQueryHandler(new_items, pattern="^new_items$"))
-        application.add_handler(CallbackQueryHandler(back_to_menu, pattern="^back_to_menu$"))
-        
-        # Обработчик ошибок
-        application.add_error_handler(error_handler)
+    # Регистрация обработчиков
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CallbackQueryHandler(about, pattern="^about$"))
+    application.add_handler(CallbackQueryHandler(catalog, pattern="^catalog$"))
+    application.add_handler(CallbackQueryHandler(new_items, pattern="^new_items$"))
+    application.add_handler(CallbackQueryHandler(back_to_menu, pattern="^back_to_menu$"))
+    application.add_error_handler(error_handler)
 
-        # Запуск бота
-        print("Бот запущен!")
-        application.run_polling(allowed_updates=Update.ALL_TYPES)
-        
-    except Exception as e:
-        logger.error(f"Критическая ошибка: {e}")
-        raise
+    print("Бот запущен!")
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
-    main()
+    try:
+        run_bot()
+    except KeyboardInterrupt:
+        print("\nБот остановлен пользователем")
+    except Exception as e:
+        logger.error(f"Критическая ошибка: {e}", exc_info=True)
 
 
 

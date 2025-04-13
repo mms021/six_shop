@@ -39,9 +39,21 @@ CMD cron && python main.py
 # Секция для бота
 FROM python:3.10-slim AS bot
 WORKDIR /app
+
+# Установка необходимых системных зависимостей
+RUN apt-get update && apt-get install -y \
+    gcc \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY ./bot/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 COPY ./bot/ ./
+
+# Запуск бота с отключенным буферированием вывода
 CMD ["python", "miniappbot.py"]
 
 # Правильный способ выбора образа
