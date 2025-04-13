@@ -14,13 +14,7 @@ const allowedOrigins = [
     'https://t.me',
     'https://telegram.org',
     'https://telegram.me',
-    'http://localhost:3478',
-    'http://localhost:3479', // альтернативный порт
-    'http://0.0.0.0:3478',
-    'http://0.0.0.0:3479', // альтернативный порт
-    'https://mms021-six-shop-8662.twc1.net',
-    'https://mms021-six-shop-8662.twc1.net:3478',
-    'https://mms021-six-shop-8662.twc1.net:3479' // альтернативный порт
+    'https://mms021-six-shop-8662.twc1.net'
 ];
 
 // Добавляем определение mimeTypes
@@ -47,10 +41,10 @@ const server = http.createServer(async (req, res) => {
         // Добавляем CORS заголовки
         const origin = req.headers.origin;
         if (origin && allowedOrigins.includes(origin)) {
-            res.setHeader('Access-Control-Allow-Origin', origin);
+            res.setHeader('Access-Control-Allow-Origin', '*');  // Разрешаем все origins для Telegram
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
             res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-            res.setHeader('Access-Control-Max-Age', '86400'); // 24 часа
+            res.setHeader('Access-Control-Max-Age', '86400');
         }
 
         // Обработка preflight запросов
@@ -71,7 +65,8 @@ const server = http.createServer(async (req, res) => {
                 'Content-Type': mimeTypes[ext] || 'application/octet-stream',
                 'Cache-Control': 'public, max-age=31536000',
                 'X-Frame-Options': 'ALLOW-FROM https://t.me/',
-                'Content-Security-Policy': "frame-ancestors 'self' https://t.me https://*.telegram.org https://*.telegram.me"
+                'Content-Security-Policy': "frame-ancestors 'self' https://t.me https://*.telegram.org https://*.telegram.me",
+                'Access-Control-Allow-Origin': '*'  // Добавляем для всех ответов
             });
             res.end(content);
         } catch (err) {
@@ -81,7 +76,8 @@ const server = http.createServer(async (req, res) => {
                 res.writeHead(200, { 
                     'Content-Type': 'text/html',
                     'X-Frame-Options': 'ALLOW-FROM https://t.me/',
-                    'Content-Security-Policy': "frame-ancestors 'self' https://t.me https://*.telegram.org https://*.telegram.me"
+                    'Content-Security-Policy': "frame-ancestors 'self' https://t.me https://*.telegram.org https://*.telegram.me",
+                    'Access-Control-Allow-Origin': '*'  // Добавляем для всех ответов
                 });
                 res.end(indexContent);
             } else {
@@ -106,30 +102,19 @@ async function checkDistDirectory() {
     }
 }
 
-// Функция для запуска сервера с проверкой порта
-async function startServer(port) {
-    return new Promise((resolve, reject) => {
-        server.listen(port, '0.0.0.0')
-            .on('listening', () => {
-                console.log(`Сервер запущен на порту ${port}`);
-                resolve();
-            })
-            .on('error', (err) => {
-                if (err.code === 'EADDRINUSE') {
-                    console.warn(`Порт ${port} занят, пробуем альтернативный порт...`);
-                    server.close();
-                    // Пробуем следующий порт
-                    startServer(port + 1).then(resolve).catch(reject);
-                } else {
-                    reject(err);
-                }
-            });
+// Упрощенная функция запуска сервера
+function startServer() {
+    server.listen(PORT, '0.0.0.0', () => {
+        console.log(`Сервер запущен на порту ${PORT}`);
+    }).on('error', (err) => {
+        console.error('Ошибка при запуске сервера:', err);
+        process.exit(1);
     });
 }
 
-// Запускаем проверку перед стартом сервера
+// Запускаем сервер
 checkDistDirectory()
-    .then(() => startServer(PORT))
+    .then(() => startServer())
     .catch(err => {
         console.error('Ошибка при запуске сервера:', err);
         process.exit(1);
