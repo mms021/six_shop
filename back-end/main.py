@@ -36,7 +36,7 @@ BACKEND_URL = os.getenv('BACKEND_URL')
 
 @asynccontextmanager
 async def lifespan(app_:FastAPI):
-#    await init_db()
+    #await init_db()
     print('DB is ready')
     yield
 
@@ -272,6 +272,8 @@ def admin_required(func):
 async def get_admin_dashboard(telegram_data: str = Header(None, alias="Telegram-Data")):
     return await rq.get_dashboard_stats()
 
+
+
 # Создание товара
 @app.post("/api/admin/products")
 @admin_required
@@ -410,6 +412,12 @@ async def get_admin_products(
         search=search
     )
     return products
+
+@app.get("/api/admin/test")
+async def test():
+    return {"success": True}
+
+
 
 # Получение всех категорий с подкатегориями
 @app.get("/api/admin/categories")
