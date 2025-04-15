@@ -14,10 +14,10 @@ const allowedOrigins = [
     'https://t.me',
     'https://telegram.org',
     'https://telegram.me',
-    'https://mms021-six-shop-8662.twc1.net',
-    'http://mms021-six-shop-8662.twc1.net',
-    'http://mms021-six-shop-8662.twc1.net:7770',
-    'https://mms021-six-shop-8662.twc1.net:7770',
+    'https://api.mms021-flowshop-1-ce60.twc1.net',
+    'http://api.mms021-flowshop-1-ce60.twc1.net',
+    'http://api.mms021-flowshop-1-ce60.twc1.net:7770',
+    'https://api.mms021-flowshop-1-ce60.twc1.net:7770',
     'http://localhost:3478',
     'http://0.0.0.0:3478'
 ];
