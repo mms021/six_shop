@@ -238,10 +238,10 @@ async def init_db():
         # Проверяем существование таблиц
         async with engine.connect() as conn:
             # Проверяем наличие хотя бы одной таблицы
-            result = await conn.run_sync(lambda sync_conn: sync_conn.execute(
+            result = await conn.execute(
                 text("SELECT tablename FROM pg_tables WHERE schemaname = 'public'")
-            ))
-            tables = await result.fetchall()
+            )
+            tables = result.fetchall()
             
             if not tables:
                 print("Таблицы не найдены, создаем...")

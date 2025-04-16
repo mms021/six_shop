@@ -36,10 +36,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text="🛍 Открыть магазин",
             web_app=WebAppInfo(url=WEBAPP_URL)
         )],
-        [
-            InlineKeyboardButton(text="👕 Каталог", callback_data="catalog"),
-            InlineKeyboardButton(text="🔥 Новинки", callback_data="new_items")
-        ],
+        
         [
             InlineKeyboardButton(text="ℹ️ О магазине", callback_data="about"),
             InlineKeyboardButton(text="👨‍💻 Поддержка", url=f"https://t.me/{SUPPORT_USERNAME}")
