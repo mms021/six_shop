@@ -34,8 +34,8 @@ COPY ./back-end/ .
 
 EXPOSE 7770
 
-CMD sleep 10 && python importProducts.py init && python main.py
-
+#CMD sleep 10 && python importProducts.py init && python main.py
+CMD python main.py
 
 
 # Секция для бота
