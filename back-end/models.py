@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, String, BigInteger, func
+from sqlalchemy import ForeignKey, String, BigInteger, func, text
 from sqlalchemy.orm import Mapped, DeclarativeBase, mapped_column, relationship, backref
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
 import asyncpg  
@@ -225,41 +225,63 @@ async def create_database():
     await conn.close()
 
 async def init_db():
-    if DELETE_DATABASE:
-        print("Создание новой базы данных...")
+    try:
+        # Проверяем существование базы данных
+        async with engine.connect() as conn:
+            print("База данных существует и подключение успешно")
+    except Exception as e:
+        print("База данных не существует, создаем...")
         await create_database()
-    
-    print("Создание таблиц...")
-    async with engine.begin() as con:
-        await con.run_sync(Base.metadata.create_all)
-    print("Таблицы созданы")
-    
-    print("Создание админов...")
-    async with async_session() as session:
-        # Список дефолтных админов
-        for admin_data in ADMINS:
-            # Проверяем существует ли уже такой пользователь
-            existing_user = await session.scalar(
-                select(User).where(User.tg_id == admin_data["tg_id"])
-            )
+        print("База данных создана")
+
+    try:
+        # Проверяем существование таблиц
+        async with engine.connect() as conn:
+            # Проверяем наличие хотя бы одной таблицы
+            result = await conn.run_sync(lambda sync_conn: sync_conn.execute(
+                text("SELECT tablename FROM pg_tables WHERE schemaname = 'public'")
+            ))
+            tables = await result.fetchall()
             
-            if not existing_user:
-                # Создаем нового админа
-                admin = User(
-                    tg_id=admin_data["tg_id"],
-                    is_admin=True,
-                    name=admin_data["name"],
-                    phone='',
-                    email='',
-                    address='',
-                    comment='',
-                    auth_token=secrets.token_hex(16)
-                )
-                session.add(admin)
-                print(f"Создан админ: {admin.name}")
-        
-        await session.commit()
-        print('Админы созданы')
+            if not tables:
+                print("Таблицы не найдены, создаем...")
+                async with engine.begin() as con:
+                    await con.run_sync(Base.metadata.create_all)
+                print("Таблицы созданы")
+            else:
+                print("Таблицы уже существуют")
+
+        # Проверяем наличие админов
+        async with async_session() as session:
+            admin_exists = await session.scalar(
+                select(User).where(User.is_admin == True)
+            )
+
+            if not admin_exists:
+                print("Админы не найдены, создаем...")
+                # Список дефолтных админов
+                for admin_data in ADMINS:
+                    admin = User(
+                        tg_id=admin_data["tg_id"],
+                        is_admin=True,
+                        name=admin_data["name"],
+                        phone='',
+                        email='',
+                        address='',
+                        comment='',
+                        auth_token=secrets.token_hex(16)
+                    )
+                    session.add(admin)
+                    print(f"Создан админ: {admin.name}")
+                
+                await session.commit()
+                print("Админы созданы")
+            else:
+                print("Админы уже существуют")
+
+    except Exception as e:
+        print(f"Ошибка при инициализации базы данных: {e}")
+        raise
 
 
 

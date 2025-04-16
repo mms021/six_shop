@@ -36,7 +36,7 @@ BACKEND_URL = os.getenv('BACKEND_URL')
 
 @asynccontextmanager
 async def lifespan(app_:FastAPI):
-    #await init_db()
+    await init_db()
     print('DB is ready')
     yield
 
