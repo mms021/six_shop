@@ -14,7 +14,7 @@ RUN chmod +x start.sh
 RUN apt-get update && apt-get install -y cron
 
 # Копирование скрипта и добавление задания в кронтаб
-RUN echo "0 18 * * * python /app/importProducts.py" >> /etc/crontab
+RUN echo "5 * * * * python /app/importProducts.py" >> /etc/crontab
 
 EXPOSE 7770
 
