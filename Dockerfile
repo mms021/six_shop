@@ -32,17 +32,19 @@ COPY ./back-end/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY ./back-end/ .
 
-# Установка cron
-RUN apt-get update && apt-get install -y cron
+# Установка supervisor и cron
+RUN apt-get update && apt-get install -y supervisor cron
 
-# Копирование скрипта и добавление задания в кронтаб
-RUN echo "5 * * * * python /app/importProducts.py" >> /etc/crontab
+# Добавляем задание в crontab
+RUN echo "5 * * * * python /app/importProducts.py >> /var/log/cron.log 2>&1" > /etc/crontab
 
+# Создаем конфигурацию supervisor
+RUN echo "[supervisord]\nnodaemon=true\n\n[program:cron]\ncommand=cron -f\n\n[program:main]\ncommand=python main.py" > /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 7770
 
-#CMD sleep 10 && python importProducts.py init && python main.py
-CMD cron && python main.py
+# Запускаем supervisor вместо прямого запуска cron
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 
 # Секция для бота
