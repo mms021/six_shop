@@ -52,11 +52,17 @@ app.add_middleware(
         "https://telegram.me",
         "http://mms021-flowshop-1-ce60.twc1.net",
         "https://mms021-flowshop-1-ce60.twc1.net",
+        "http://mms021-flowshop-1-ce60.twc1.net:7770",
         "https://mms021-flowshop-1-ce60.twc1.net:7770",
+        "http://api.mms021-flowshop-1-ce60.twc1.net",
+        "https://api.mms021-flowshop-1-ce60.twc1.net",
+        "http://api.mms021-flowshop-1-ce60.twc1.net:7770",
+        "https://api.mms021-flowshop-1-ce60.twc1.net:7770",
         "http://localhost:3478",
         "http://0.0.0.0:3478",
-        "https://api.mms021-flowshop-1-ce60.twc1.net:7770"
+        "*"  # Временно разрешаем все домены для отладки
     ],
+    allow_origin_regex="https?://.*",  # Разрешаем все домены через регулярное выражение
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
