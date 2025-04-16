@@ -13,7 +13,7 @@ services:
       - PORT=3478
     ports:
       - "3478:3478"
-    restart: always
+    #restart: always
     networks:
       - app_network
 
@@ -28,7 +28,7 @@ services:
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
     ports:
       - "5432:5432"
-    restart: always
+    #restart: always
     networks:
       - app_network
 
@@ -50,7 +50,7 @@ services:
       - "7770:7770" 
     depends_on:
       - database
-    restart: always
+    #restart: always
     networks:
       - app_network
 
@@ -67,7 +67,7 @@ services:
       - PYTHONUNBUFFERED=1
     networks:
       - app_network
-    restart: always
+    #restart: always
 
 networks:
   app_network:

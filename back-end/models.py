@@ -33,6 +33,7 @@ POSTGRES_HOST = os.getenv('POSTGRES_HOST')
 
 ADMINS = [ {"tg_id": i.split('|')[0], "name": i.split('|')[1]} for i in ADMINS]
 
+
 postgre_url = f'postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}'
 
 engine = create_async_engine(url=postgre_url, echo=True )
