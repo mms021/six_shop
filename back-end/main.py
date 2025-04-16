@@ -43,13 +43,24 @@ async def lifespan(app_:FastAPI):
 
 app = FastAPI(title='Shop', lifespan=lifespan)
 
-# Добавьте эту конфигурацию CORS
+# Обновляем конфигурацию CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Разрешить все источники для тестирования
+    allow_origins=[
+        "https://t.me",
+        "https://telegram.org",
+        "https://telegram.me",
+        "http://mms021-flowshop-1-ce60.twc1.net",
+        "https://mms021-flowshop-1-ce60.twc1.net",
+        "https://mms021-flowshop-1-ce60.twc1.net:7770",
+        "http://localhost:3478",
+        "http://0.0.0.0:3478",
+        "https://api.mms021-flowshop-1-ce60.twc1.net:7770"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
 # Монтируем статические файлы
