@@ -59,10 +59,6 @@ COPY ./bot/ ./
 # Запуск бота с отключенным буферированием вывода
 CMD ["python", "miniappbot.py"]
 
-# Правильный способ выбора образа
-FROM frontend AS final_frontend
+
 FROM backend AS final_backend
 FROM bot AS final_bot
-
-# Финальный образ, выбираем нужный образ на основе SERVICE_TYPE
-FROM final_${SERVICE_TYPE} AS final 
