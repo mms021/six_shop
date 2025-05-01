@@ -19,57 +19,6 @@ services:
 
  
 
-  back-end:
-    container_name: tg_shop_back_end 
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        SERVICE_TYPE: backend
-    env_file:
-      - .env
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=G21nd21nd1opsa
-      - POSTGRES_DB=tg_shop
-      - DATABASE_URL=postgresql+asyncpg://postgres:G21nd21nd1opsa@database:5432/tg_shop
-    ports:
-      - "7770:7770" 
-    depends_on:
-      - database
-    restart: always
-    networks:
-      - app_network
-  database:
-    image: postgres:15
-    container_name: database
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=G21nd21nd1opsa
-      - POSTGRES_DB=tg_shop
-      - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
-      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
-    ports:
-      - "5432:5432"
-    #restart: always
-    networks:
-      - app_network
-
-  bot:
-    container_name: tg_shop_bot
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        SERVICE_TYPE: bot
-    env_file:
-      - .env
-    environment:
-      - PYTHONUNBUFFERED=1
-    networks:
-      - app_network
-    restart: always
-
 networks:
   app_network:
     driver: bridge
