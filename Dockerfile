@@ -1,10 +1,3 @@
-ARG SERVICE_TYPE=frontend
-
-# Выбор нужного образа на основе SERVICE_TYPE
-FROM node:18-alpine AS base_image
-ONBUILD RUN echo "Неверное значение SERVICE_TYPE"
-
-
 
 # Секция для фронтенда
 FROM node:18-alpine AS frontend

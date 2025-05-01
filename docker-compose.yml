@@ -1,24 +1,4 @@
 services:
-  app:
-    container_name: tg_shop_app
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        SERVICE_TYPE: frontend
-    env_file:
-      - .env
-    environment:
-      - NODE_ENV=production
-      - PORT=3478
-    ports:
-      - "3478:3478"
-    #restart: always
-    networks:
-      - app_network
-
- 
-
   back-end:
     container_name: tg_shop_back_end 
     build:
