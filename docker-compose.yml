@@ -46,6 +46,8 @@ services:
       - .env
     environment:
       - PYTHONUNBUFFERED=1
+    ports:
+      - "7771:7771"
     networks:
       - app_network
     restart: always
