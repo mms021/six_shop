@@ -23,7 +23,8 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 # Создаем временный файл с учетными данными из переменной окружения
 def get_credentials_file():
     """Создает временный файл с учетными данными из переменной окружения"""
-    credentials_json = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+    credentials_json = open('google-credentials.json').read() # os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+
     if not credentials_json:
         raise ValueError("Переменная GOOGLE_APPLICATION_CREDENTIALS не установлена")
         
