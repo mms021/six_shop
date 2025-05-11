@@ -26,11 +26,6 @@ services:
       target: final-backend
     env_file:
       - .env
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=G21nd21nd1opsa
-      - POSTGRES_DB=tg_shop
-      - DATABASE_URL=postgresql+asyncpg://postgres:G21nd21nd1opsa@database:5432/tg_shop
     ports:
       - "7770:7770" 
     depends_on:
