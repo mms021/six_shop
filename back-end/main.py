@@ -115,6 +115,12 @@ class OrderResponse(BaseModel):
     address: str | None = None
     comment: str | None = None
 
+@app.get("/")
+async def root():
+    return {"message": "site"}
+
+
+
 # Пользователь
 @app.get("/api/users/{tg_id}")
 async def get_user(tg_id: int, user_data: UserData, telegram_data: str = Header(None, alias="Telegram-Data")):
