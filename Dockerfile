@@ -45,7 +45,8 @@ COPY ./bot/ ./
 CMD ["python", "miniappbot.py"]
 
 # Финальная сборка для бэкенда
+FROM bot AS final-bot
+
 FROM backend AS final-backend
 
-# Финальная сборка для бота
-FROM bot AS final-bot
+
