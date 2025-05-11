@@ -24,8 +24,17 @@ services:
       context: .
       dockerfile: Dockerfile
       target: final-backend
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=G21nd21nd1opsa
+      - POSTGRES_DB=tg_shop
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      - DATABASE_URL=postgresql+asyncpg://postgres:G21nd21nd1opsa@database:5432/tg_shop
+      - TG_ADMINS=36194498|Admin1,36194499|Admin2,1071973201|Admin3
+      - DELETE_DATABASE=False
+
+
     ports:
       - "8000:8000" 
     depends_on:
