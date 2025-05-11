@@ -39,7 +39,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 COPY ./bot/ ./
 
-EXPOSE 7771
+#EXPOSE 7771
 
 # Запуск бота с отключенным буферированием вывода
 CMD ["python", "miniappbot.py"]
