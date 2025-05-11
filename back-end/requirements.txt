@@ -11,4 +11,5 @@ google-api-python-client
 aiohttp
 requests
 certifi
+greenlet
 
