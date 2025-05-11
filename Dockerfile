@@ -44,6 +44,8 @@ EXPOSE 7771
 # Запуск бота с отключенным буферированием вывода
 CMD ["python", "miniappbot.py"]
 
-# Финальная сборка
-ARG SERVICE_TYPE=backend
-FROM ${SERVICE_TYPE}
+# Финальная сборка для бэкенда
+FROM backend AS final-backend
+
+# Финальная сборка для бота
+FROM bot AS final-bot

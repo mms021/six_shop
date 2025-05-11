@@ -4,8 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        SERVICE_TYPE: backend
+      target: final-backend
     env_file:
       - .env
     environment:
@@ -40,8 +39,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        SERVICE_TYPE: bot
+      target: final-bot
     env_file:
       - .env
     environment:
