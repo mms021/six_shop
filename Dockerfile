@@ -1,8 +1,8 @@
-
-
+# Базовый образ
+FROM python:3.10 AS base
 
 # Секция для бэкенда
-FROM python:3.10 AS backend
+FROM base AS backend
 WORKDIR /app
 COPY ./back-end/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
@@ -24,7 +24,7 @@ CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 
 # Секция для бота
-FROM python:3.10-slim AS bot
+FROM base AS bot
 WORKDIR /app
 # Установка необходимых системных зависимостей
 RUN apt-get update && apt-get install -y \
@@ -39,9 +39,11 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 COPY ./bot/ ./
 
+EXPOSE 7771
+
 # Запуск бота с отключенным буферированием вывода
 CMD ["python", "miniappbot.py"]
 
-
-FROM backend AS final_backend
-FROM bot AS final_bot
+# Финальная сборка
+ARG SERVICE_TYPE=backend
+FROM ${SERVICE_TYPE}
