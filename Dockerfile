@@ -44,8 +44,9 @@ COPY ./bot/ ./
 # Запуск бота с отключенным буферированием вывода
 CMD ["python", "miniappbot.py"]
 
-# Финальная сборка для бэкенда
+
 FROM bot AS final-bot
+
 
 FROM backend AS final-backend
 
