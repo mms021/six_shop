@@ -11,8 +11,12 @@ COPY ./back-end/ .
 # Установка supervisor и cron
 RUN apt-get update && apt-get install -y supervisor cron
 
-# Добавляем задание в crontab
-RUN echo "5 * * * * python /app/importProducts.py >> /var/log/cron.log 2>&1" > /etc/crontab
+# Создаем директорию для логов и настраиваем права
+RUN mkdir -p /var/log/cron && touch /var/log/cron.log && chmod 0666 /var/log/cron.log
+
+# Создаем пользовательский crontab
+RUN echo "5 * * * * root python /app/importProducts.py >> /var/log/cron.log 2>&1" > /etc/cron.d/import-products
+RUN chmod 0644 /etc/cron.d/import-products
 
 # Создаем конфигурацию supervisor
 RUN echo "[supervisord]\nnodaemon=true\nuser=root\n\n[program:cron]\ncommand=cron -f\n\n[program:main]\ncommand=uvicorn main:app --host 0.0.0.0 --port 8080\ndirectory=/app\nuser=root\nautorestart=true\nstartretries=10\nstartsecs=5\nstdout_logfile=/var/log/main.log\nstderr_logfile=/var/log/main.error.log" > /etc/supervisor/conf.d/supervisord.conf
