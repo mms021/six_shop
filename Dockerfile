@@ -15,9 +15,9 @@ RUN apt-get update && apt-get install -y supervisor cron
 RUN echo "5 * * * * python /app/importProducts.py >> /var/log/cron.log 2>&1" > /etc/crontab
 
 # Создаем конфигурацию supervisor
-RUN echo "[supervisord]\nnodaemon=true\nuser=root\n\n[program:cron]\ncommand=cron -f\n\n[program:main]\ncommand=uvicorn main:app --host 0.0.0.0 --port 8000\ndirectory=/app\nuser=root\nautorestart=true\nstartretries=10\nstartsecs=5\nstdout_logfile=/var/log/main.log\nstderr_logfile=/var/log/main.error.log" > /etc/supervisor/conf.d/supervisord.conf
+RUN echo "[supervisord]\nnodaemon=true\nuser=root\n\n[program:cron]\ncommand=cron -f\n\n[program:main]\ncommand=uvicorn main:app --host 0.0.0.0 --port 8080\ndirectory=/app\nuser=root\nautorestart=true\nstartretries=10\nstartsecs=5\nstdout_logfile=/var/log/main.log\nstderr_logfile=/var/log/main.error.log" > /etc/supervisor/conf.d/supervisord.conf
 
-EXPOSE 8000
+EXPOSE 8080
 
 # Запускаем supervisor вместо прямого запуска cron
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
