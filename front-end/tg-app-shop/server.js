@@ -14,16 +14,13 @@ const allowedOrigins = [
     'https://t.me',
     'https://telegram.org',
     'https://telegram.me',
-    'http://mms021-flowshop-1-ce60.twc1.net',
+  
     'https://mms021-flowshop-1-ce60.twc1.net',
-    'http://mms021-flowshop-1-ce60.twc1.net:7770',
-    'https://mms021-flowshop-1-ce60.twc1.net:7770',
-    'http://api.mms021-flowshop-1-ce60.twc1.net',
+  
     'https://api.mms021-flowshop-1-ce60.twc1.net',
-    'http://api.mms021-flowshop-1-ce60.twc1.net:7770',
-    'https://api.mms021-flowshop-1-ce60.twc1.net:7770',
-    'http://localhost:3478',
-    'http://0.0.0.0:3478'
+  
+    'https://mms021-six-shop-c7be.twc1.net'
+
 ];
 
 // Добавляем определение mimeTypes
