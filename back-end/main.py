@@ -921,6 +921,21 @@ async def log_requests(request, call_next):
     print(f"Response: {response.status_code}")
     return response
 
+@app.get("/api/admin/logs/cron")
+@admin_required
+async def get_cron_logs():   
+    try:
+        with open('/var/log/cron.log', 'r') as file:
+            # Читаем последние N строк
+            all_lines = file.readlines()
+            return {
+                "success": True,
+                "logs": all_lines,
+                "total_lines": len(all_lines)
+            }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при чтении логов: {str(e)}")
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
