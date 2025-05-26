@@ -922,11 +922,9 @@ async def log_requests(request, call_next):
     return response
 
 @app.get("/api/admin/logs/cron")
-@admin_required
 async def get_cron_logs():   
     try:
         with open('/var/log/cron.log', 'r') as file:
-            # Читаем последние N строк
             all_lines = file.readlines()
             return {
                 "success": True,
