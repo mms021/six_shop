@@ -5,7 +5,9 @@ FROM python:3.10 AS base
 FROM base AS backend
 WORKDIR /app
 COPY ./back-end/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir google-auth-oauthlib
 COPY ./back-end/ .
 
 # Установка supervisor и cron
@@ -15,7 +17,7 @@ RUN apt-get update && apt-get install -y supervisor cron
 RUN mkdir -p /var/log/cron && touch /var/log/cron.log && chmod 0666 /var/log/cron.log
 
 # Создаем пользовательский crontab
-RUN echo "20 * * * * root python3 /app/importProducts.py >> /var/log/cron.log 2>&1" > /etc/cron.d/import-products
+RUN echo "20 * * * * python3 /app/importProducts.py >> /var/log/cron.log 2>&1" > /etc/cron.d/import-products
 RUN chmod 0644 /etc/cron.d/import-products
 
 # Создаем конфигурацию supervisor
