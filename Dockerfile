@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y supervisor cron
 RUN mkdir -p /var/log/cron && touch /var/log/cron.log && chmod 0666 /var/log/cron.log
 
 # Создаем пользовательский crontab
-RUN echo "20 * * * * python3 /app/importProducts.py >> /var/log/cron.log 2>&1" > /etc/cron.d/import-products
+RUN echo "1,10,20,30,40,50 * * * * root python3 /app/importProducts.py >> /var/log/cron.log 2>&1" > /etc/cron.d/import-products
 RUN chmod 0644 /etc/cron.d/import-products
 
 # Создаем конфигурацию supervisor
